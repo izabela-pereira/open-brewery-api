@@ -60,4 +60,4 @@ In the gold layer, the data was grouped by location and brewery type to deliver 
 ## ADF Pipeline and schedulation
 - Airflow
 ## Data Quality test with dbt
-##Monitoring/Alerting/Error handling
+## Monitoring/Alerting/Error handling
