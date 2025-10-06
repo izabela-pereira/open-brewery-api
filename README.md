@@ -37,11 +37,22 @@ Before starting the code development for transformation, an exploratory data ana
 The project followed medallion architecture as detailed bellow:
 
 ### Bronze Layer
-The bronze layer data was stored as-is, mainteining its original format, as json file for auditability, and with no transformation. The 'bronzelayer' notebook is responsible for the data extraction and storage in the bronze layer ADLS Gen2 bronze layer.
+The bronze layer data was stored as-is, maintaining its original format as a JSON file for auditability, with no transformations. The bronzelayer notebook is responsible for the data extraction and storage in the ADLS Gen2 bronze layer.
 
 ### Silver Layer
+In the silver layer, the transformations were made considering the exploratory analysis conducted with the bronze layer data. The transformations and their purposes are described below:
+1. **state_province** column was **dropped** since its data was identical to the state column when records were compared;;
+2. **duplicates were removed**;
+3. **null** values were **replaced** in the columns where they were present
+  - The values were replaced by **zero** in latitude and longitude **(type double)** and by **NA** in the other columns **(type string).**
+4. **Standardization of string values**
+  - Columns **country** and **state** were not stardardized, showing differences in capitalization and containing blank spaces. Column country had its values standardized using the trim and initcap functions, while state passed through trim and upper functions.
+  - A dat_load column was added to guarantee data extraction traceability and to retain this information for future data quality tests.
+5. The data was saved in delta format, partitioned by location using country and state, since using city would result in partitions that were too small and not meaningful.
+6. A table was created with the data in Unity Catalog to be used by **dbt** for data quality tests.
 
 ### Gold Layer
+In the gold layer, the data was grouped by location and brewery type to deliver the number of each type of brewery in each city. The data was saved in delta format, and a table was created to improve querying and visualization.
 
 # Developing
 ## Databricks notebooks
