@@ -59,3 +59,4 @@ In the gold layer, the data was grouped by location and brewery type to deliver 
 ## Databricks notebooks
 ## ADF Pipeline and schedulation
 - Airflow
+## Data Quality test with dbt
