@@ -1,5 +1,3 @@
-<img width="1464" height="529" alt="arquitetura_sem fundo" src="https://github.com/user-attachments/assets/c983949d-6145-4275-b71c-d9f4a1a64743" />
-
 # Open Brewery API full extraction
 Open Brewery API full extraction, including data transformation and delta file and delta table delivery, considering medallion architecture. The project was developed using Azure Cloud, Databricks (with Python and Pyspark) and dbt for data quality tests. 
 
