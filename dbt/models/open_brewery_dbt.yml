@@ -1,0 +1,58 @@
+version: 2
+
+sources:
+  - name: brewery
+    schema: default
+    tables:
+      - name: open_brewery_silver
+
+models:
+  - name: open_brewery_dbt
+    description: "Checks API's data according to business rules"
+    tests:
+      - table_not_empty
+
+    columns:
+      - name: id
+        description: "Brewery id"
+        tests:
+          - unique
+          - not_null
+
+
+      - name: name
+        description: "Brewery name"
+        tests:
+          - not_null
+
+      - name: brewery_type
+        description: "Brewery type"
+        tests:
+          - accepted_values:
+              values:
+                - micro
+                - nano
+                - regional
+                - planning
+                - bar
+                - brewpub
+                - closed
+                - contract
+                - large
+                - proprietor
+          - not_null
+
+      - name: city
+        description: "Brewery city"
+        tests:
+          - not_null
+
+      - name: state
+        description: "Brewery state"
+        tests:
+          - not_null
+
+      - name: country
+        description: "Brewery country"
+        tests:
+          - not_null
