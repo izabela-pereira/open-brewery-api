@@ -37,7 +37,7 @@ Before starting the code development for transformation, an exploratory data ana
 The project followed medallion architecture as detailed bellow:
 
 ### Bronze Layer
-The bronze layer data was stored as-is, maintaining its original format as a JSON file for auditability, with no transformations. The bronzelayer notebook is responsible for the data extraction and storage in the ADLS Gen2 bronze layer.
+The bronze layer data was stored as-is, maintaining its original format as **JSON** for auditability, with no transformations. The bronzelayer notebook is responsible for the data extraction and storage in the ADLS Gen2 bronze layer.
 
 ### Silver Layer
 In the silver layer, the transformations were made considering the exploratory analysis conducted with the bronze layer data. The transformations and their purposes are described below:
@@ -47,13 +47,13 @@ In the silver layer, the transformations were made considering the exploratory a
   - The values were replaced by **zero** in latitude and longitude **(type double)** and by **NA** in the other columns **(type string).**
 4. **Standardization of string values**
   - Columns **country** and **state** were not stardardized, showing differences in capitalization and containing blank spaces. Column country had its values standardized using the trim and initcap functions, while state passed through trim and upper functions.
-  - A dat_load column was added to guarantee data extraction traceability and to retain this information for future data quality tests.
-5. The data was saved in delta format, partitioned by location using country and state, since using city would result in partitions that were too small and not meaningful.
+  - A **dat_load** column was added to guarantee data extraction traceability and to retain this information for future data quality tests.
+5. The data was saved in the ADLS Gen2 silver layer storage in **delta format**, partitioned by **location** using country and state, since using city would result in partitions that were too small and not meaningful.
 6. A table was created with the data in Unity Catalog to be used by **dbt** for data quality tests.
 **IMPORTANT:** During the creation of the silver layer dataset, the schema was defined manually because the **address_3** column was omitted by Spark. This likely occurred because the column contains a large number of null values.
 
 ### Gold Layer
-In the gold layer, the data was grouped by location and brewery type to deliver the number of each type of brewery in each city. The data was saved in delta format, and a table was created to improve querying and visualization.
+In the gold layer, the data was grouped by location and brewery type to deliver the number of each type of brewery in each city. The data was saved in the ADLS Gen2 gold layer storage in **delta format**, and a table was created to improve querying and visualization.
 
 # Developing
 ## Databricks notebooks
