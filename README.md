@@ -24,8 +24,6 @@ The resources created on Azure Cloud were:
 
 Ps: the .json files with all the resources configuration are available with the author.
 
-### dbt Cloud and Databricks integration
-
 # API Extraction and Exploratory Data Analysis
 ## API Extraction
 The data was extracted from [Open Brewery API](https://www.openbrewerydb.org/) and considered the page number and per_page parameters to guarantee complete extraction and optimization.
