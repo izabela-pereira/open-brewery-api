@@ -50,6 +50,7 @@ In the silver layer, the transformations were made considering the exploratory a
   - A **dat_load** column was added to guarantee data extraction traceability and to retain this information for future data quality tests.
 5. The data was saved in the ADLS Gen2 silver layer storage in **delta format**, partitioned by **location** using country and state, since using city would result in partitions that were too small and not meaningful.
 6. A table was created with the data in Unity Catalog to be used by **dbt** for data quality tests.
+
 **IMPORTANT:** During the creation of the silver layer dataset, the schema was defined manually because the **address_3** column was omitted by Spark. This likely occurred because the column contains a large number of null values.
 
 ### Gold Layer
