@@ -2,27 +2,27 @@
 Open Brewery API full extraction, including data transformation and delta file and delta table delivery, considering medallion architecture. The project was developed using Azure Cloud, Databricks (with Python and PySpark) and dbt for data quality tests. 
 
 # Introduction
-This project was developed considering the medallion architecture, using Microsoft Azure Cloud as the main environment, with resources as ADLS Gen2 for storage, Azure Data Factory for pipeline management and the Databricks platform for developing and validating code. Databricks Unity Catalog was used via Databricks integration with dbt Cloud to implement testing on the table created as a silver layer product, after transformation.
+This project was developed considering the medallion architecture, using Microsoft Azure Cloud as the main environment, with resources such as **ADLS Gen2** for storage, **Azure Data Factory** for pipeline management and **Databricks** platform for developing and validating code. Databricks **Unity Catalog** was used via Databricks integration with **dbt Cloud** to implement data quality tests on the table created as a silver layer product, after transformation.
 
 ## Architecture Proposal
 The architecture proposal considered practicality, performance (cloud usage guarantees scalability and high availability) and easy to integrate tools.
 
 <img width="1464" height="529" alt="image" src="https://github.com/user-attachments/assets/058a9c62-f603-4003-9400-d1ae22f7c94a" />
 
-Microsoft Azure was the chosen cloud because of its possibility to use a free account and high information availability to help understand the environment as well as the possibility to work with Databricks internally. However, the free account brings some limitations as the inability to start compute clusters on Databricks (there is the possibility to work with serverless compute) and on Azure Data Factory.
+**Microsoft Azure** was the chosen cloud due to the possibility of using a free account and high information availability to help understand the environment as well as the possibility to work with Databricks internally. However, the free account brings some limitations as the inability to start compute clusters on Databricks (there is the possibility to work with serverless compute) and on Azure Data Factory.
 
-dbt Cloud was the chosen tool for testing because it is one of the most widely used tools for data projects nowadays and it has a lot of information available online. Also, it is easily connected to Databricks as it has a connector that allows using Unity Catalog.
+**dbt Cloud** was the chosen tool for testing because it is one of the most widely used tools for data projects nowadays and it has a lot of information available online. Also, it is easily connected to Databricks as it has a connector that allows using Unity Catalog.
 
-Apache Airflow was chosen because it is easy to set up and use, provides reliable workflow orchestration, and includes strong monitoring and alerting through its web UI and integrations.
+**Apache Airflow** was chosen because it is easy to set up and use, provides reliable workflow orchestration, and includes strong monitoring and alerting through its web UI and integrations.
 
 ### Azure Resource creation
 The resources created on Azure Cloud were:
-  - Resource Group: needed to group the other resources created for the project. Easy to create, requires only for an Azure valid subscription;
-  - ADLS Gen2 storage: storage containers for each layer. It requires a storage account, created inside the resource group, with recomended GRS storage. The account followed most of the default configuration and three containers were created inside de Blob (storage account) that are  'bronze-layer', 'silver-layer' and 'gold-layer';
-  - Azure Data Factory (ADF): the ADF creation requires only for a resource group. Most of the configuration was set as default. After creation, de ADF Studio is available and it makes possible to create pipelines and schedules for these pipelines. The pipeline creation will be described later in this README file.
-  - Databricks Workspace: the Databricks Workspace creation requires only for a resource group
+  - **Resource Group:** needed to group the other resources created for the project. Easy to create, requires only for an Azure valid subscription;
+  - **ADLS Gen2 storage:** requires a storage account, created inside the resource group, with recomended GRS storage. The account followed most of the default configuration and three containers were created inside de Blob (storage account) that are  'bronze-layer', 'silver-layer' and 'gold-layer';
+  - **Azure Data Factory (ADF):** the ADF creation requires only for a resource group. Most of the configuration was set as default. After creation, de ADF Studio is available and it makes possible to create pipelines and schedules for these pipelines.
+  - **Databricks Workspace:** the Databricks Workspace creation requires only for a resource group
 
-Note: the .json files with all resources configuration are available with the author.
+**Note:* the .json files with all resources configuration are available with the author.
 
 # API Extraction and Exploratory Data Analysis
 ## API Extraction
@@ -72,17 +72,17 @@ Databricks offers several connectors in its Marketplace tab, including **dbt con
 Two different jobs were created in Databricks: one **including dbt**, which unfortunately **failed** and remains as a technical debt, and another **without dbt tests** which ran  **successfully**. Both evidence can be found in **databricks/jobs** folder of this project.
 
 ### Unity Catalog
-Tables created and dbt models created for data quality tests are available in Databricks Unity Catalog. Evidence can be found in **databricks/unity_catalog** folder of this project.
+Tables and dbt models created for data quality tests are available in Databricks Unity Catalog. Evidence can be found in **databricks/unity_catalog** folder of this project.
 
 ## dbt tests
 dbt was the chosen tool for conducting data quality tests. 
 dbt Cloud Studio was used for creating and validating tests, and the **model** (including implemented tests), the **macro** of a custom test, and **evidence** of execution can be found in **dbt** folder of this project.
 Of the tests implemented, two failed while all others passed.
-- **test_table_not_empty** (custom test) failed and couldn't be fixed within the project deadline; it also remains as a technical debt. 
-- **test_accepted _values**, applied to **brewery_type** column, failed because the dataset includes values different from those listed as valid in the API documentation for this field.
+- **test_table_not_empty** (custom test) failed and couldn't be fixed within the project deadline, remaining as a technical debt;
+- **test_accepted _values**, applied to **brewery_type** column, failed because the **dataset includes values different from those listed as valid in the API documentation* for this field.
 
 ## ADF Pipeline and Scheduling / Apache Airflow
-As proposed initially, an Azure Data Factory (ADF) pipeline was created; however the free account doesn´t allow the creation of custom clusters to run it, and it is still not possible to use serverless clusters. Evidence of the pipeline creation is available in **datafactory/pipeline_trigger** of this project.
+As proposed initially, an Azure Data Factory (ADF) pipeline was created, however the free account doesn´t allow the creation of custom clusters to run it and it is still not possible to use serverless clusters. Evidence of the pipeline creation is available in **datafactory/pipeline_trigger** of this project.
 
 A trigger was also created to schedule ADF pipeline runs, since it wasn´t possible to set up an integration with **Apache Airflow**, as initially suggested. Airflow integration with ADF does exist, but it is also not available for free accounts.
 
