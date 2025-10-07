@@ -65,13 +65,13 @@ After creating a Databricks workspace using the resource group initially created
 - silverlayer - responsible for data transformation and storage in the ADLS Gen2 silver-layer in delta format as well as the creation of a delta table for dbt-conducted data quality tests;
 - goldlayer - responsible for the data aggregation and storage in the ADLS Gen2 gold-layer in delta format, as well as the creation of a delta table for querying and better visualization.
 
-## Databricks and dbt
+### Databricks and dbt
 Databricks offers several connectors in its Marketplace tab, including **dbt connector**. A connection was created, and tests were developed using **dbt Cloud**. Evidence can be found in **dbt** folder of this project. 
 
-## Databricks jobs
+### Databricks jobs
 Two different jobs were created in Databricks: one **including dbt**, which unfortunately **failed** and remains as a technical debt, and another **without dbt tests** which ran  **successfully**. Both evidences can be found in **databricks/jobs** folder of this project.
 
-### dbt tests
+## dbt tests
 dbt was the chosen tool for conducting data quality tests. 
 dbt Cloud Studio was used for creating and validating tests, and the **model** (including implemented tests), the **macro** of a custom test, and **evidence** of execution can be found in **dbt** folder of this project.
 Of the tests implemented, two failed while all others passed.
@@ -85,5 +85,5 @@ A trigger was also created to schedule ADF pipeline runs, since it wasn´t possi
 
 Despite the fact that Airflow connection was not possible, a DAG model was created following the official documentation as an example, and it is available in the **airflow** folder of this project.
 
-## Monitoring/Alerting/Error handling
+# Monitoring/Alerting/Error handling
 
